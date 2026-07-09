@@ -1,0 +1,6 @@
+/target
+**/target
+.soroban
+.stellar
+*.wasm
+.DS_Store
