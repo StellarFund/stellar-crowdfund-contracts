@@ -3,6 +3,7 @@ resolver = "2"
 members = [
     "contracts/campaign",
     "contracts/escrow",
+    "contracts/milestone",
 ]
 
 [workspace.package]
