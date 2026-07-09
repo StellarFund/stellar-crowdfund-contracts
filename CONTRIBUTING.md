@@ -26,6 +26,21 @@
    cargo build
    ```
 
+### A note on `Cargo.lock` and `ed25519-dalek`
+
+`Cargo.lock` is committed (these crates compile to deployable wasm, so
+reproducible builds matter) — do not delete it to "fix" dependency issues.
+In particular, `soroban-env-host` declares `ed25519-dalek >= 2.0.0` with no
+upper bound, so an unconstrained resolve can pick up a future breaking major
+release of `ed25519-dalek` and fail to compile `soroban-env-host`'s own test
+utilities with a `CryptoRng`/`rand_core` trait-bound error. If you ever need
+to regenerate the lockfile and hit that error, pin back to the last known-good
+2.x release:
+
+```sh
+cargo update -p ed25519-dalek@<version-that-got-picked> --precise 2.2.0
+```
+
 ## How to build
 
 ```sh
