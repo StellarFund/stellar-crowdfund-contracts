@@ -76,26 +76,16 @@ for name in "${CONTRACTS[@]}"; do
   echo "  ${name}: ${contract_id}"
 done
 
-log "Initializing escrow and registry (admin = ${SOURCE_ACCOUNT})"
+log "Initializing campaign, escrow, milestone, and registry (admin = ${SOURCE_ACCOUNT})"
 ADMIN_ADDRESS=$(stellar keys address "${SOURCE_ACCOUNT}")
 
-stellar contract invoke \
-  --id "${CONTRACT_IDS[campaign]}" \
-  --source "${SOURCE_ACCOUNT}" \
-  --network "${NETWORK}" \
-  -- initialize --admin "${ADMIN_ADDRESS}"
-
-stellar contract invoke \
-  --id "${CONTRACT_IDS[escrow]}" \
-  --source "${SOURCE_ACCOUNT}" \
-  --network "${NETWORK}" \
-  -- initialize --admin "${ADMIN_ADDRESS}"
-
-stellar contract invoke \
-  --id "${CONTRACT_IDS[registry]}" \
-  --source "${SOURCE_ACCOUNT}" \
-  --network "${NETWORK}" \
-  -- initialize --admin "${ADMIN_ADDRESS}"
+for name in campaign escrow milestone registry; do
+  stellar contract invoke \
+    --id "${CONTRACT_IDS[$name]}" \
+    --source "${SOURCE_ACCOUNT}" \
+    --network "${NETWORK}" \
+    -- initialize --admin "${ADMIN_ADDRESS}"
+done
 
 log "Deployment summary"
 echo "Network: ${NETWORK}"

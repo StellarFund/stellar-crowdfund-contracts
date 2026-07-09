@@ -89,9 +89,7 @@ deadlines, etc). New functions should follow the same pattern — see
    ./scripts/deploy.sh testnet crowdfund-deployer
    ```
    This builds all 4 contracts, uploads and deploys each one, initializes
-   campaign/escrow/registry with the deployer as admin (milestone has no
-   `initialize` step — its admin-gated functions take the admin address as an
-   explicit parameter), and prints a summary table.
+   all 4 with the deployer as admin, and prints a summary table.
 3. Paste the resulting addresses into [DEPLOYMENTS.md](DEPLOYMENTS.md).
 
 To deploy a single contract manually instead of using the script:
