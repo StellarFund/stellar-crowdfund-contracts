@@ -55,9 +55,13 @@ for name in "${CONTRACTS[@]}"; do
   [ -f "${wasm_path}" ] || die "Expected wasm not found at ${wasm_path} — did the build succeed?"
 
   log "Optimizing ${name}.wasm"
-  stellar contract optimize --wasm "${wasm_path}"
   optimized_path="${WASM_DIR}/${name}.optimized.wasm"
-  [ -f "${optimized_path}" ] || optimized_path="${wasm_path}"
+  if stellar contract optimize --wasm "${wasm_path}" 2>/dev/null && [ -f "${optimized_path}" ]; then
+    :
+  else
+    echo "  (optimize unavailable in this stellar-cli build — deploying unoptimized wasm)"
+    optimized_path="${wasm_path}"
+  fi
 
   log "Installing ${name} wasm on ${NETWORK}"
   wasm_hash=$(stellar contract upload \

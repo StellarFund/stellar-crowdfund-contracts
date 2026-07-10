@@ -19,6 +19,21 @@
    ```
    This compiles from source and needs a C toolchain (`build-essential` /
    Xcode command line tools) on your machine.
+
+   The default build also pulls in `hidapi` (Ledger hardware wallet
+   support) via the `additional-libs` feature, which needs `libudev-dev`
+   (Linux) and its `pkg-config` metadata. If you don't have that installed
+   and don't need hardware wallet support, install without it instead:
+   ```sh
+   cargo install --locked stellar-cli --no-default-features
+   ```
+   The tradeoff: `stellar contract optimize` (and `stellar contract build
+   --optimize`) needs `additional-libs` too and will fail with `must
+   install with "additional-libs" feature` on a `--no-default-features`
+   install. `scripts/deploy.sh` already handles this — it falls back to
+   deploying the unoptimized wasm if optimization isn't available, which is
+   harmless given this project's release profile (`opt-level = "z"`, LTO)
+   already keeps wasm sizes small (a few KB per contract).
 4. **Clone and build:**
    ```sh
    git clone https://github.com/StellarFund/stellar-crowdfund-contracts.git
